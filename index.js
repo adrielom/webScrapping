@@ -1,32 +1,51 @@
 const puppeteer = require('puppeteer');
 
-(async () => {
-    const browser = await puppeteer.launch({ headless: false });
-    const page = await browser.newPage();
+async function CalculateDelivery(address1, address2) {
+    try {
+        const browser = await puppeteer.launch({ headless: false }   /*this opens up a browser*/);
+        const page = await browser.newPage();
 
-    await page.goto('https://ligmototaxi.com.br/simulacao?tipo=M');
+        await page.goto('https://ligmototaxi.com.br/simulacao?tipo=M');
 
-    // example: get innerHTML of an element
-    await page.evaluate(() => {
-        document.querySelector("#txtEnderecoE1").value = 'Av A 902 Conjunto Ceará Fortaleza - CE'
-        document.querySelector("#txtEnderecoE2").value = 'Av Doutor Silas Munguba 4410 Fortaleza - CE'
-    })
+        await page.evaluate(({ address1, address2 }) => {
+            document.querySelector("#txtEnderecoE1").value = address1
+            aw = document.querySelector('#txtEnderecoE1').value
+            document.querySelector("#txtEnderecoE2").value = address2
+        }, { address1, address2 })
 
-    await page.click('.divPacote > button[data-id="1"]')
-    await page.click('.divPacote > button[data-id="2"]')
-    await page.waitFor(500)
-    await page.evaluate(() => {
-        console.log(document.querySelector('#divBotaoCalcularFreteUniversal > .botao1').value)
-    })
-    await page.click('#divBotaoCalcularFreteUniversal > .botao1')
+        await page.click('.divPacote > button[data-id="1"]')
+        await page.click('.divPacote > button[data-id="2"]')
+        await page.waitFor(1000)
 
-    await page.waitForSelector('#divValorFreteAltP')
-    console.log('hey')
-    await page.waitFor(500)
-    await page.evaluate(() => {
-        console.log(document.querySelector('#divValorFreteAltP').value)
-    })
+        await page.click('#divBotaoCalcularFreteUniversal > .botao1')
 
-    await browser.waitForTarget(() => false)
-    await browser.close();
-})();
+        await page.waitForSelector('#divValorFreteAltP')
+        const getValue = await page.$$eval('#divValorFreteAltP', rests => rests.map(res => res.innerHTML));
+        await page.waitForSelector('.n20distancia ~ h5')
+        const getDist = await page.$$eval('.n20distancia ~ h5', rests => rests.map(res => res.innerHTML));
+        await page.waitForSelector('.n20tempo ~ h5')
+        const getTime = await page.$$eval('.n20tempo ~ h5', rests => rests.map(res => res.innerHTML));
+
+        await browser.close();
+        const retObj = { value: getValue.toString().replace('\n', '').trim(), distance: getDist.toString().replace('\n', '').trim(), time: getTime.toString().replace('\n', '').trim() }
+        return retObj
+
+    } catch (err) {
+        return { err: err, msg: 'Por favor, cheque os campos de endereço' }
+
+    }
+
+};
+
+const address1 = 'Av A 902 Conjunto Ceará Fortaleza - CE';
+const address2 = 'Belo Horizonte 2000';
+
+
+let obj;
+
+CalculateDelivery(address1, address2).then(r => {
+
+    const json = JSON.stringify(r);
+    obj = json
+    console.log(json)
+})
