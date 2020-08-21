@@ -30,7 +30,7 @@ app.listen(PORT, () => {
 
 async function CalculateDelivery(address1, address2) {
     try {
-        const browser = await puppeteer.launch({ headless: false }   /*this opens up a browser*/);
+        const browser = await puppeteer.launch(/*{ headless: false }   this opens up a browser*/);
         const page = await browser.newPage();
 
         await page.goto('https://ligmototaxi.com.br/simulacao?tipo=M');
