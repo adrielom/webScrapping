@@ -39,8 +39,6 @@ async function CalculateDelivery(address1, address2) {
             args: [
                 '--no-sandbox',
                 '--disable-setuid-sandbox',
-                '--disable-dev-shm-usage',
-                '--single-process'
             ],
         });
         console.log('launched')
