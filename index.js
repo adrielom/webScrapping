@@ -31,6 +31,7 @@ app.listen(PORT, () => {
 })
 
 async function CalculateDelivery(address1, address2) {
+    console.log('calculate')
     try {
         console.log('production testing')
         const browser = await puppeteer.launch({
@@ -39,6 +40,7 @@ async function CalculateDelivery(address1, address2) {
                 '--disable-setuid-sandbox',
             ],
         }/*{ headless: false }   this opens up a browser*/);
+        console.log('launched')
         const page = await browser.newPage();
 
         await page.goto('https://ligmototaxi.com.br/simulacao?tipo=M');
