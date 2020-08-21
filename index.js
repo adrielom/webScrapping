@@ -41,6 +41,7 @@ async function CalculateDelivery(address1, address2) {
             ]
         });
 
+
         console.log('launched')
         const page = await browser.newPage();
 
