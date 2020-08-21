@@ -1,4 +1,32 @@
 const puppeteer = require('puppeteer');
+const express = require('express')
+
+const app = express()
+const PORT = 5600
+
+
+app.get('/', async (req, res) => {
+
+    let address1 = 'Av A 902 Conjunto Ceará Fortaleza - CE';
+    let address2 = 'Rua Belo Horizonte 2830';
+    address1 = address1 !== req.query.address1 ? address1 : req.query.address1
+    address2 = req.query.address2
+
+    let obj
+    try {
+        await CalculateDelivery(address1, address2).then(json => {
+            obj = json
+        })
+    } catch (error) {
+        console.log(error)
+    }
+    res.json(obj)
+})
+
+
+app.listen(PORT, () => {
+    console.log('listening to port ' + PORT)
+})
 
 async function CalculateDelivery(address1, address2) {
     try {
@@ -37,15 +65,3 @@ async function CalculateDelivery(address1, address2) {
 
 };
 
-const address1 = 'Av A 902 Conjunto Ceará Fortaleza - CE';
-const address2 = 'Belo Horizonte 2000';
-
-
-let obj;
-
-CalculateDelivery(address1, address2).then(r => {
-
-    const json = JSON.stringify(r);
-    obj = json
-    console.log(json)
-})
