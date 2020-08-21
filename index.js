@@ -37,6 +37,7 @@ async function CalculateDelivery(address1, address2) {
         const page = await browser.newPage();
 
         await page.goto('https://ligmototaxi.com.br/simulacao?tipo=M');
+        console.log('page')
 
         await page.evaluate(({ address1, address2 }) => {
             document.querySelector("#txtEnderecoE1").value = address1
@@ -44,12 +45,15 @@ async function CalculateDelivery(address1, address2) {
             document.querySelector("#txtEnderecoE2").value = address2
         }, { address1, address2 })
 
+        console.log('eval')
         await page.click('.divPacote > button[data-id="1"]')
         await page.click('.divPacote > button[data-id="2"]')
         await page.waitFor(1000)
 
+        console.log('before click')
         await page.click('#divBotaoCalcularFreteUniversal > .botao1')
 
+        console.log('after click')
         await page.waitForSelector('#divValorFreteAltP')
         const getValue = await page.$$eval('#divValorFreteAltP', rests => rests.map(res => res.innerHTML));
         await page.waitForSelector('.n20distancia ~ h5')
