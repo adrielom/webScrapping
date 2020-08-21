@@ -11,7 +11,6 @@ app.get('/', async (req, res) => {
     let address2 = 'Rua Belo Horizonte 2830';
     address1 = address1 !== req.query.address1 ? address1 : req.query.address1
     address2 = req.query.address2
-
     let obj
     try {
         await CalculateDelivery(address1, address2).then(json => {
@@ -30,6 +29,7 @@ app.listen(PORT, () => {
 
 async function CalculateDelivery(address1, address2) {
     try {
+        console.log('production testing')
         const browser = await puppeteer.launch(/*{ headless: false }   this opens up a browser*/);
         const page = await browser.newPage();
 
