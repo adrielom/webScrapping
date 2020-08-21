@@ -35,11 +35,14 @@ async function CalculateDelivery(address1, address2) {
     try {
         console.log('production testing')
         const browser = await puppeteer.launch({
+            headless: true,
             args: [
                 '--no-sandbox',
                 '--disable-setuid-sandbox',
+                '--disable-dev-shm-usage',
+                '--single-process'
             ],
-        }/*{ headless: false }   this opens up a browser*/);
+        });
         console.log('launched')
         const page = await browser.newPage();
 
