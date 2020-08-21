@@ -76,7 +76,6 @@ async function CalculateDelivery(address1, address2) {
 
     } catch (err) {
         return { err: err, msg: 'Por favor, cheque os campos de endereço' }
-
     }
 
 };
