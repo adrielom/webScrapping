@@ -11,14 +11,17 @@ app.get('/', async (req, res) => {
     let address2 = 'Rua Belo Horizonte 2830';
     address1 = address1 !== req.query.address1 ? address1 : req.query.address1
     address2 = req.query.address2
+    console.log('testing 2')
     let obj
     try {
+        console.log('testing 3')
         await CalculateDelivery(address1, address2).then(json => {
             obj = json
         })
     } catch (error) {
         console.log(error)
     }
+    console.log('testing 4')
     res.json(obj)
 })
 
@@ -56,6 +59,7 @@ async function CalculateDelivery(address1, address2) {
 
         await browser.close();
         const retObj = { value: getValue.toString().replace('\n', '').trim(), distance: getDist.toString().replace('\n', '').trim(), time: getTime.toString().replace('\n', '').trim() }
+        console.log('testing 5 ' + retObj)
         return retObj
 
     } catch (err) {
